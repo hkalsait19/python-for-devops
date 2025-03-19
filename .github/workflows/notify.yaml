@@ -1,0 +1,105 @@
+name: learn-python-github-actions #this is the learning file for Python and GHA
+run-name: ${{ github.actor }} is learning python with github actions
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      
+  notify-success:
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Send Slack notification on success
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.GHA_SLACK_WEBHOOK }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{
+            "channel": "#gha-workflow",
+            "attachments": [
+              {
+                "color": "#36a64f",
+                "pretext": "GitHub Actions Notification",
+                "title": ":white_check_mark: GHA DEPLOYMENT SUCCESSFUL :rocket:",
+                "text": "No action required. The *GHA* workflow completed successfully.",
+                "footer": "GitHub Actions",
+                "ts": '$(date +%s)',
+                "fields": [
+                  {
+                    "title": "PULL REQUEST",
+                    "value": "<${{ github.server_url }}/${{ github.repository}}>"
+                    "short": true
+                  },
+                  {
+                    "title": "GHA BUILD URL",
+                    "value": "<${{github.action_repository}}>",
+                    "short": true
+                  },
+                  {
+                    "title": "BRANCH",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/tree/${{ github.head_ref }}|${{ github.head_ref }}>",
+                    "short": true
+                  },
+                  {
+                    "title": "CHANGELOG",
+                    "value": "- ${{ github.event.head_commit.message }} (@${{ github.actor }})",
+                    "short": false
+                  }
+                ]
+              }
+            ]
+          }' $SLACK_WEBHOOK_URL
+
+  notify-failure:
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Send Slack notification on failure
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.GHA_SLACK_WEBHOOK }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{
+            "channel": "#gha-workflow",
+            "attachments": [
+              {
+                "color": "danger",
+                "pretext": "GitHub Actions Notification",
+                "title": ":x: GHA DEPLOYMENT FAILED :x:",
+                "text": "Action required: Please check the *GHA* workflow failure.",
+                "footer": "GitHub Actions",
+                "ts": '$(date +%s)',
+                "fields": [
+                  {
+                    "title": "PULL REQUEST",
+                    "value": "<${{github.action_repository}}>",
+                    "short": true
+                  },
+                  {
+                    "title": "GHA BUILD URL",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.run_id }}>",
+                    "short": true
+                  },
+                  {
+                    "title": "BRANCH",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/tree/${{ github.head_ref }}|${{ github.head_ref }}>",
+                    "short": true
+                  },
+                  {
+                    "title": "JOB",
+                    "value": "${{ github.job }}",
+                    "short": true
+                  },
+                  {
+                    "title": "COMMIT",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}> (@${{ github.actor }})",
+                    "short": false
+                  }
+                ]
+              }
+            ]
+          }' $SLACK_WEBHOOK_URL
