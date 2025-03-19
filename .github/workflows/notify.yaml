@@ -31,7 +31,8 @@ jobs:
                 "fields": [
                   {
                     "title": "PULL REQUEST",
-                    "value": "<${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}|#${{ github.event.pull_request.number }}>",
+                    # "value": "<${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}>",
+                    "value": "${{ github.event_name == 'pull_request' && github.event.pull_request.number }}",
                     "short": true
                   },
                   {
@@ -48,10 +49,6 @@ jobs:
                     "title": "CHANGELOG",
                     "value": "- ${{ github.event.head_commit.message }} (@${{ github.actor }})",
                     "short": false
-                  },               {
-                    "title": "COMMIT",
-                    "value": "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}> (@${{ github.actor }})",
-                    "short": true
                   }
                 ]
               }
