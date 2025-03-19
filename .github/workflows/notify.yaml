@@ -46,8 +46,12 @@ jobs:
                   },
                   {
                     "title": "CHANGELOG",
-                    "value": "- ${{ github.event.pull_request.title }} (@${{ github.actor }})",
+                    "value": "- ${{ github.event.head_commit.message }} (@${{ github.actor }})",
                     "short": false
+                  },               {
+                    "title": "COMMIT",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}> (@${{ github.actor }})",
+                    "short": true
                   }
                 ]
               }
