@@ -36,7 +36,7 @@ jobs:
                   },
                   {
                     "title": "GHA BUILD URL",
-                    "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.run_id }}>",
+                    "value": "<${{github.action_repository}}>",
                     "short": true
                   },
                   {
@@ -76,7 +76,7 @@ jobs:
                 "fields": [
                   {
                     "title": "PULL REQUEST",
-                    "value": "<${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}|#${{ github.event.pull_request.number }}>",
+                    "value": "<${{github.action_repository}}>",
                     "short": true
                   },
                   {
