@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is learning python with github actions
 on: [push]
 
 jobs:
-  build:
+  python-exercise:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -75,7 +75,7 @@ jobs:
                 "fields": [
                   {
                     "title": "PULL REQUEST",
-                    "value": "<${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}|#${{ github.event.pull_request.number }}>",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}>",
                     "short": true
                   },
                   {
