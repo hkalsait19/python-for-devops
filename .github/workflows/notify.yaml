@@ -32,12 +32,11 @@ jobs:
                   {
                     "title": "PULL REQUEST",
                     "value": "<${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}|#${{ github.event.pull_request.number }}>",
-                    #"value": "<${{ github.server_url }}/${{ github.repository}}>"
                     "short": true
                   },
                   {
                     "title": "GHA BUILD URL",
-                    "value": "<${{github.action_repository}}>",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.run_id }}>",
                     "short": true
                   },
                   {
@@ -47,14 +46,13 @@ jobs:
                   },
                   {
                     "title": "CHANGELOG",
-                    "value": "- ${{ github.event.head_commit.message }} (@${{ github.actor }})",
+                    "value": "- ${{ github.action.commit }} (@${{ github.actor }})",
                     "short": false
                   }
                 ]
               }
             ]
           }' $SLACK_WEBHOOK_URL
-
   notify-failure:
     runs-on: ubuntu-latest
     if: failure()
@@ -77,7 +75,7 @@ jobs:
                 "fields": [
                   {
                     "title": "PULL REQUEST",
-                    "value": "<${{github.action_repository}}>",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}|#${{ github.event.pull_request.number }}>",
                     "short": true
                   },
                   {
